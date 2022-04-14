@@ -12,8 +12,11 @@ struct RowView: View {
     
     var body: some View {
         HStack{
-            CombinationView(combination: viewModel.combinationDotViewModels )
-            ResultView(resultList: viewModel.resultDotViewModels )
+            CombinationView(combination: viewModel.combinationDotViewModels)
+                .padding(.leading)
+            Spacer()
+            ResultView(resultList: viewModel.resultDotViewModels)
+                .padding(.trailing)
         }
     }
 }
@@ -21,7 +24,7 @@ struct RowView: View {
 struct RowView_Previews: PreviewProvider {
     static var previews: some View {
         
-        let combination = Combination(colors: [.green, .green, .blue, .white], result: [.positioned, .exist, .positioned])
+        let combination = Combination(colors: [.green, .red, .blue, .white], result: [.positioned, .exist, .positioned])
         
         let rowViewModel = RowViewModel(combination: combination)
         

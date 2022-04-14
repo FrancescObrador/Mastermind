@@ -21,7 +21,7 @@ struct ResultView: View {
                 ResultDotView(viewModel: resultList[index])
             }
         }
-        .frame(width: 30, height: 30, alignment: .center)
+        .frame(width: 10, height: 10, alignment: .center)
         .padding()
     }
 }

@@ -12,24 +12,36 @@ struct BoardView: View {
     @ObservedObject var game: MastermindViewModel
     
     var body: some View {
-        VStack(alignment: .center){
+        VStack(){
+            
             InformationView(game: game)
             
-            ForEach(0 ..< game.board.count, id: \.self){ index in
-                RowView(viewModel: game.board[index])
+            ScrollView(.vertical){
+                ScrollViewReader { value in
+                    ForEach(0 ..< game.board.count, id: \.self){ index in
+                        RowView(viewModel: game.board[index])
+                    }
+                    .onChange(of: game.board.count) { _ in
+                        value.scrollTo(game.board.count - 1)
+                    }
+                }
             }
+            
             Spacer()
+            
             InputView(game: game)
+            
             Spacer()
         }
-        .padding(.all)
+        .padding(.horizontal)
+        
     }
 }
 
 struct BoardView_Previews: PreviewProvider {
     static var previews: some View {
         let game =  MastermindViewModel()
- 
+        
         BoardView(game: game)
     }
 }

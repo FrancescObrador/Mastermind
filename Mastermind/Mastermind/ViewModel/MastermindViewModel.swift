@@ -9,18 +9,33 @@ import Foundation
 import SwiftUI
 
 class MastermindViewModel : ObservableObject {
-    let maxTries = 6
-    @Published private(set) var board = [RowViewModel].init(repeating: RowViewModel.dummy(), count: 6)
-    private var tries: Int
-    public static let validColors: [Color] = [.red, .green, .blue, .white]
-    private var secret: [Color]
     
-    private(set) var combinationIndex: Int = 0
-    var temporalCombinationColors = [Color]()
+    public let maxTries = 12
+    public static let combinationMaxCount = 4
+    public static let validColors: [Color] = [.red, .mint, .blue, .yellow, .orange, .purple]
+    
+    // Observed vars
+    @Published private(set) var board = [RowViewModel]()
     @Published var temporalCombination = [CombinationDotViewModel]()
     
+    @Published var isGameOver = false
+    public var gameOverText = ""
+    
+    private var tries: Int
+    private var secret: [Color]
+    
+    @Published var temporalCombinationColors = [Color]()
+    private(set) var combinationIndex: Int = 0
+    
+    init(_ secret: [Color]? = nil)
+    {
+        self.secret = secret ?? MastermindViewModel.GetRandomCombination()
+        print(self.secret)
+        self.tries = 0
+    }
+    
     func AddColor(_ color: Color){
-        if combinationIndex < 4 {
+        if combinationIndex < MastermindViewModel.combinationMaxCount {
             temporalCombinationColors.append(color)
             temporalCombination.append(CombinationDotViewModel(color: color))
             combinationIndex += 1
@@ -35,15 +50,36 @@ class MastermindViewModel : ObservableObject {
         }
     }
     
-    init(_ secret: [Color]? = nil)
-    {
-        self.secret = secret ?? MastermindViewModel.GetRandomCombination()
-        self.tries = 0
+    func EnterCombination(){
+        
+        guard temporalCombinationColors.count == MastermindViewModel.combinationMaxCount else {
+            return
+        }
+        
+        let combination = Check(temporalCombinationColors)
+        
+        RegisterTry(combination)
+        
+        if combination.result == [.positioned, .positioned, .positioned, .positioned] {
+            // Game is won
+            GameOver("You won the game!")
+        }
+        
+        if GetTurnsLeft() == 0 {
+            // Game is lost
+            GameOver("Oh... You lost the game")
+        }
     }
     
-    func EnterCombination(){
-        RegisterTry(Check(temporalCombinationColors))
+    func GameOver(_ text: String){
+        gameOverText = text
+        isGameOver = true
+        tries = 0
+        secret = MastermindViewModel.GetRandomCombination()
+        print(secret)
+        board.removeAll()
     }
+    
     
     func Check(_ combination: [Color]) -> Combination
     {
@@ -84,14 +120,18 @@ class MastermindViewModel : ObservableObject {
         return result
     }
     
-    func GetTurnsLeft() -> String{
-        return "You have " + String((maxTries-tries)) + " left."
+    func GetTurnsLeft() -> Int{
+        return (maxTries - tries)
     }
     
-    private func RegisterTry(_ combination: Combination){
-        board[tries].Update(combination)
+    func GetTurnsLeftText() -> String{
+        return "You have " + String(GetTurnsLeft()) + " turns left."
+    }
+    
+    func RegisterTry(_ combination: Combination){
+        board.append(RowViewModel(combination: combination))
         tries += 1
-
+        
         temporalCombination.removeAll()
         temporalCombinationColors.removeAll()
         combinationIndex = 0
@@ -105,8 +145,8 @@ private extension MastermindViewModel {
         
         var combination = [Color]()
         
-        (0...3).forEach { _ in
-            combination.append(self.validColors[Int.random(in: 0...3)])
+        (0...MastermindViewModel.combinationMaxCount-1).forEach { _ in
+            combination.append(self.validColors[Int.random(in: 0...MastermindViewModel.validColors.count-1)])
         }
         return combination
     }

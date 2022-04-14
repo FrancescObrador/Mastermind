@@ -23,9 +23,9 @@ final class ResultDotViewModel : ObservableObject, Hashable{
         color.hash(into: &hasher)
     }
     
-    init(result: Result, size: CGSize = CGSize(width: 20, height: 20)){
+    init(result: Result, size: CGSize? = nil){
         self.result = result
-        self.size = size
+        self.size = size ?? CGSize(width: 15, height: 15)
         self.color = self.result == .exist ? .black: .red
     }
 }

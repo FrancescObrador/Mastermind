@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct InformationView: View {
+    
     @ObservedObject var game: MastermindViewModel
+    
     var body: some View {
         
         VStack{
@@ -18,11 +20,14 @@ struct InformationView: View {
                 .shadow(color: .black, radius: 0.75, x: 1, y: 1)
             
             HStack{
-                Text(game.GetTurnsLeft())
+                Text(game.GetTurnsLeftText())
             }
             
         }
-        .padding()
+        .frame(alignment: .topLeading)
+        .popover(isPresented: $game.isGameOver, arrowEdge: .bottom) {
+            Text(game.gameOverText)
+        }
         
         
     }

@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
 
     var mastermind = MastermindViewModel()
+    
     var body: some View {
         BoardView(game: mastermind)
     }

@@ -13,28 +13,28 @@ struct InputView: View {
     
     var body: some View {
         
-        HStack(alignment: .center){
+        HStack(alignment: .bottom){
             
             VStack{
                 // Player' selected Colors
                 HStack{
                     ForEach(game.temporalCombinationColors, id: \.self) { color in
-                        CombinationDotView(viewModel: CombinationDotViewModel(color: color))
+                        CombinationDotView(viewModel: CombinationDotViewModel(color: color, size: CGSize(width: 30, height: 30)))
                     }
                 }
                 
                 // Color Buttons
-                HStack{
+                HStack(alignment: .bottom){
                     ForEach(MastermindViewModel.validColors, id: \.self) { color in
-                        CombinationDotView(viewModel: CombinationDotViewModel(color: color))
+                        CombinationDotView(viewModel: CombinationDotViewModel(color: color, size: CGSize(width: 30, height: 30)))
                             .onTapGesture {
                                 game.AddColor(color)
                             }
                     }
                 }
             }
+            .padding(.horizontal)
             
-            //Spacer()
             
             VStack(){
                 Button("⌫"){

@@ -8,8 +8,9 @@
 import Foundation
 import SwiftUI
 
-class RowViewModel : ObservableObject {
-    @Published var combinationDotViewModels: [CombinationDotViewModel]
+class RowViewModel {
+    
+    var combinationDotViewModels: [CombinationDotViewModel]
     var resultDotViewModels: [ResultDotViewModel]
     
     init(combination: Combination){

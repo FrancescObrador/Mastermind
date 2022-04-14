@@ -21,8 +21,8 @@ final class CombinationDotViewModel : ObservableObject, Hashable{
         color.hash(into: &hasher)
     }
     
-    init(color: Color, size: CGSize = CGSize(width: 35, height: 35)){
+    init(color: Color, size: CGSize? = nil){
         self.color = color
-        self.size = size
+        self.size = size ?? CGSize(width: 25, height: 25)
     }
 }
