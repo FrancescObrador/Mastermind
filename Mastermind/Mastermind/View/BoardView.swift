@@ -10,6 +10,7 @@ import SwiftUI
 struct BoardView: View {
     
     @ObservedObject var game: MastermindViewModel
+    @State var start = true
     
     var body: some View {
         VStack(){
@@ -34,6 +35,14 @@ struct BoardView: View {
             Spacer()
         }
         .padding(.horizontal)
+        .popover(isPresented: $game.isGameOver, arrowEdge: .bottom) {
+            Text(game.gameOverText)
+        }
+        .popover(isPresented: $start, arrowEdge: .bottom) {
+            Text("Welcome to Mastermind! \n \n Press the colors of the bottom to make a combination and check it with the bottom button or remove the lattest with the upper button. \n \n Swipe down this popover to start the game.")
+                .multilineTextAlignment(.center)
+                .padding(.all)
+        }
         
     }
 }

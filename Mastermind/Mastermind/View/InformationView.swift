@@ -25,11 +25,6 @@ struct InformationView: View {
             
         }
         .frame(alignment: .topLeading)
-        .popover(isPresented: $game.isGameOver, arrowEdge: .bottom) {
-            Text(game.gameOverText)
-        }
-        
-        
     }
 }
 

@@ -36,11 +36,11 @@ struct InputView: View {
             .padding(.horizontal)
             
             
-            VStack(){
+            VStack(alignment: .leading){
                 Button("⌫"){
                     game.RemoveLastAddedColor()
                 }
-                .frame(width: 75, height: 35)
+                .frame(width: 65, height: 35)
                 .background(.gray)
                 .clipShape(Rectangle())
                 .foregroundColor(.white)
@@ -48,11 +48,12 @@ struct InputView: View {
                 Button("⮐"){
                     game.EnterCombination()
                 }
-                .frame(width: 75, height: 35)
+                .frame(width: 65, height: 35)
                 .background(.gray)
                 .clipShape(Rectangle())
                 .foregroundColor(.white)
             }
+            .padding(.trailing)
         }
     }
 }
